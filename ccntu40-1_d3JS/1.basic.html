@@ -1,0 +1,49 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <script src=https://d3js.org/d3.v3.min.js charset="utf-8"></script>
+    <title>D3.js增刪修改範例</title>
+</head>
+<body>
+    <script type="text/javascript">
+        //增刪修改範例
+        var myData = [1];
+        d3.select('body')
+            .selectAll('div') //選取網頁上所有的div，用於簡化取代for迴圈的一個函式
+            .data(myData) //用來綁定已設定的資料
+            .enter() //利用enter()新增標籤，用來比對目前網頁中所有<div>的元素，若<div>的元素量比資料少時，就會新增
+            .append('div') //將myData設定於<div>上
+            .text(function (d) { return d; }); //匿名函式function(d)，將資料顯示於網頁的text上
+        //更新後為[1]
+
+        var myData = [2, 3, 4];
+        d3.select('body')
+            .selectAll('div')
+            .data(myData)
+            .enter()
+            .append('div')
+            .text(function (d) { return d; }); //enter()僅僅去比對網頁上的元素，發現目前資料比元素多了2筆，因此只新增[3,4]的資料
+        //更新後為[1,3,4]
+
+        var myData = [10, 20];
+        d3.select('body')
+            .selectAll('div')
+            .data(myData)
+            .text(function (d) { return d; }); //update需要資料量與元素量一樣，假如只更新2筆資料，則只會更新前2筆
+        //更新後為[10,20,4]
+
+        var myData = [1];
+        d3.select('body')
+            .selectAll('div')
+            .data(myData)
+            .text(function (d) { return d; })
+            .exit()
+            .remove(); //利用exit()和remove()來刪除資料，假如設定新data為[1]，則會刪除後面第二第三項[20,4]的元素
+        //更新後為[1]
+
+        //enter()和exit()，可以想像成是一種過濾器，enter()是過濾出多出來的資料(data > elements)，然後用append()新增資料，而exit()則是去過濾缺少的資料(data < elements)，然後利用remove()來刪除元素。
+    </script>
+
+</body>
+</html>
